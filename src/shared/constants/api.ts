@@ -1,6 +1,5 @@
 import queryString from 'query-string';
 import isEmpty from 'lodash/isEmpty';
-import { DateTime } from 'luxon';
 
 export const API_CONFIG = {
 	baseUrl: `${process.env.REACT_APP_URL}`,
@@ -21,8 +20,8 @@ export const getUrl = (url: string, params: any = {}): string => {
 };
 
 export const getWeatherData = (infoType: any, searchParams: any) => {
-	const url = new URL(process.env.REACT_APP_URL + '/' + infoType);
-	url.search = new URLSearchParams({ ...searchParams, appid: process.env.REACT_APP_API_KEY }) as any;
+	const url = new URL(apiUrl + '/' + infoType);
+	url.search = new URLSearchParams({ ...searchParams, appid: apiKey }) as any;
 	return fetch(url).then((res) => res.json());
 };
 const formatCurrentWeather = (data: any) => {
@@ -78,21 +77,21 @@ const formatCurrentWeather = (data: any) => {
 // 	return { timezone, daily, hourly };
 // };
 
-export const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLL yyyy' | Local Time: 'hh:mm a") =>
-	DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
+// export const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLL yyyy' | Local Time: 'hh:mm a") =>
+// 	DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
 
-const getFormattedWeatherData = async (searchParams: any) => {
-	const formattedCurrentWeather = await getWeatherData('weather', searchParams).then(formatCurrentWeather);
+// const getFormattedWeatherData = async (searchParams: any) => {
+// 	const formattedCurrentWeather = await getWeatherData('weather', searchParams).then(formatCurrentWeather);
 
-	// const { lat, lon } = formattedCurrentWeather;
+// 	// const { lat, lon } = formattedCurrentWeather;
 
-	// const formattedForcastWeather = await getWeatherData('onecall', {
-	// 	lat,
-	// 	lon,
-	// 	exclude: 'current,minutely,alerts',
-	// 	units: searchParams.units
-	// }).then(formatForcastWeather);
-	return { ...formattedCurrentWeather };
-};
+// 	// const formattedForcastWeather = await getWeatherData('onecall', {
+// 	// 	lat,
+// 	// 	lon,
+// 	// 	exclude: 'current,minutely,alerts',
+// 	// 	units: searchParams.units
+// 	// }).then(formatForcastWeather);
+// 	return { ...formattedCurrentWeather };
+// };
 
-export default getFormattedWeatherData;
+// export default getFormattedWeatherData;
