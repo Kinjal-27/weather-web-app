@@ -33,7 +33,7 @@ const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
 		]
 	};
 	const config = {
-		type: 'bar',
+		type: 'line',
 		data: data,
 		filler: {
 			backgroundColor: 'rgba(255, 0, 0, 01)' // Replace with your desired color
