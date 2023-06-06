@@ -15,15 +15,21 @@ import Dust from 'assets/images/dust.jpeg';
 import Sand from 'assets/images/sand.gif';
 import Fog from 'assets/images/fog.gif';
 import Tornado from 'assets/images/tornado.gif';
+import Sunny from 'assets/images/sunset-sunrise.gif';
 
 import '../styles/weatherInfo.scss';
+import LineChart from './lineChart';
 
 const WeatherInfo = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [apiData, setApiData] = useState<any>({});
 	const [getState, setGetState] = useState({ q: 'Ahmedabad' });
 	const [state, setState] = useState({ q: 'Ahmedabad' });
-
+	const [chartParams, setChartParams] = useState({
+		q: 'Ahmedabad',
+		cnt: 7
+	});
+	const [tempArr, setTempArr] = useState([]);
 	const inputHandler = (event: any) => {
 		setGetState({ q: event.target.value.trim() });
 	};
@@ -55,8 +61,25 @@ const WeatherInfo = () => {
 		return data;
 	};
 
+	const fetchWeeklyData = async () => {
+		setIsLoading(true);
+		const data = await getWeatherData('forecast', { ...chartParams })
+			.then((data) => {
+				const weeklyTemp: any = [];
+				data.list.map((items: any) => {
+					weeklyTemp.push(kelvinToFarenheit(items.main.temp));
+					setTempArr(weeklyTemp);
+				});
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+		return data;
+	};
 	useEffect(() => {
 		fetchWeather();
+		fetchWeeklyData();
 	}, [state]);
 
 	interface IWeatherIcon {
@@ -67,23 +90,23 @@ const WeatherInfo = () => {
 		ThunderStorm: ThunderStrom,
 		Rain: Rain,
 		Snow: Snow,
-		Mist: Rain,
-		Smoke: Rain,
+		Mist: Sunny,
+		Smoke: Fog,
 		Haze: Haze,
 		Dust: Dust,
 		Fog: Fog,
 		Sand: Sand,
 		Squall: Rain,
 		Tornado: Tornado,
-		Clear: Rain,
-		Clouds: Rain
+		Clear: Sunny,
+		Clouds: Sunny
 	};
 
 	return (
 		<div className='hero--conatiner'>
 			<div className='weather-info--container'>
 				<div className='left-weather-info--wrapper'>
-					<div className='ml--30 font-size--22 mt--30'>Weather</div>
+					<div className='ml--30 font-size--22 mt--30'>WEATHER</div>
 					{isLoading && <Spinner />}
 					{!isLoading && apiData?.weather && (
 						<div
@@ -100,6 +123,7 @@ const WeatherInfo = () => {
 								<div className='font-size--40 mt--40'>
 									{kelvinToFarenheit(apiData.main.temp)}&deg; C
 								</div>
+								<LineChart tempArr={tempArr} />
 							</div>
 						</div>
 					)}
