@@ -8,7 +8,7 @@ import {
 	Tooltip,
 	Legend
 } from 'chart.js';
-import { Chart } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface IChartProps {
@@ -19,13 +19,11 @@ const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
 	const data = {
 		labels: dateTemp,
 		backgroundColor: 'rgba(255, 99, 132, 0.2)',
-		fill: true,
 		borderColor: '#fff',
 		datasets: [
 			{
 				label: 'Temperature (°C)',
 				data: tempArr,
-				fill: true,
 				borderColor: 'rgba(75, 192, 192, 1)',
 				backgroundColor: 'white',
 				color: 'white'
@@ -33,11 +31,7 @@ const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
 		]
 	};
 	const config = {
-		type: 'line',
 		data: data,
-		filler: {
-			backgroundColor: 'rgba(255, 0, 0, 01)' // Replace with your desired color
-		},
 		scales: {
 			x: {
 				grid: {
@@ -78,7 +72,7 @@ const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
 		}
 	};
 
-	return <Chart data={data} type='line' options={config as Record<string, any>} />;
+	return <Line data={data} options={config as Record<string, any>} />;
 };
 
 export default LineChart;
