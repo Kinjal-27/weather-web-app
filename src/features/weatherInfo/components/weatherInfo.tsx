@@ -29,15 +29,22 @@ const WeatherInfo = () => {
 		q: 'Ahmedabad',
 		cnt: 7
 	});
+	const [chartParamsState, setChartParamsState] = useState({
+		q: 'Ahmedabad',
+		cnt: 7
+	});
 	const [tempArr, setTempArr] = useState([]);
+	const [date, setDate] = useState([]);
 	const inputHandler = (event: any) => {
 		setGetState({ q: event.target.value.trim() });
+		setChartParams({ ...chartParams, q: event.target.value.trim() });
 	};
 
 	const handleKeyDown = (event: any) => {
 		if (event.key === 'Enter') {
 			// Get input value
 			setState(getState);
+			setChartParamsState(chartParams);
 		}
 	};
 
@@ -63,11 +70,14 @@ const WeatherInfo = () => {
 
 	const fetchWeeklyData = async () => {
 		setIsLoading(true);
-		const data = await getWeatherData('forecast', { ...chartParams })
+		const data = await getWeatherData('forecast', { ...chartParamsState })
 			.then((data) => {
 				const weeklyTemp: any = [];
+				const dateTemp: any = [];
 				data.list.map((items: any) => {
 					weeklyTemp.push(kelvinToFarenheit(items.main.temp));
+					dateTemp.push(items.dt_txt.split(' '));
+					setDate(dateTemp);
 					setTempArr(weeklyTemp);
 				});
 				setIsLoading(false);
@@ -123,7 +133,7 @@ const WeatherInfo = () => {
 								<div className='font-size--40 mt--40'>
 									{kelvinToFarenheit(apiData.main.temp)}&deg; C
 								</div>
-								<LineChart tempArr={tempArr} />
+								<LineChart tempArr={tempArr} dateTemp={date} />
 							</div>
 						</div>
 					)}

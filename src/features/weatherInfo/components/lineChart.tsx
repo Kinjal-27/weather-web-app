@@ -11,9 +11,9 @@ import {
 import { Chart } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const LineChart = ({ tempArr }: any) => {
+const LineChart = ({ tempArr, dateTemp }: any) => {
 	const data = {
-		labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thirsday', 'Friday', 'Saturday'],
+		labels: dateTemp,
 		backgroundColor: 'rgba(255, 99, 132, 0.2)',
 		fill: true,
 		borderColor: '#fff',
