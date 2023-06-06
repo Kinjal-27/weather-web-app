@@ -19,6 +19,8 @@ export const getUrl = (url: string, params: any = {}): string => {
 	return urlString;
 };
 
+const apiUrl = `https://api.openweathermap.org/data/2.5`;
+
 export const getWeatherData = (infoType: any, searchParams: any) => {
 	const url = new URL(apiUrl + '/' + infoType);
 	url.search = new URLSearchParams({ ...searchParams, appid: apiKey }) as any;
