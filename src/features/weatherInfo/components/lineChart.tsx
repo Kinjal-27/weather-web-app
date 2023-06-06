@@ -11,7 +11,11 @@ import {
 import { Chart } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const LineChart = ({ tempArr, dateTemp }: any) => {
+interface IChartProps {
+	tempArr: string[];
+	dateTemp: string[];
+}
+const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
 	const data = {
 		labels: dateTemp,
 		backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -74,7 +78,7 @@ const LineChart = ({ tempArr, dateTemp }: any) => {
 		}
 	};
 
-	return <Chart data={data} type='line' options={config as any} />;
+	return <Chart data={data} type='line' options={config as Record<string, any>} />;
 };
 
 export default LineChart;

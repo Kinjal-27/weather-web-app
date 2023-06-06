@@ -33,14 +33,14 @@ const WeatherInfo = () => {
 		q: 'Ahmedabad',
 		cnt: 7
 	});
-	const [tempArr, setTempArr] = useState([]);
-	const [date, setDate] = useState([]);
-	const inputHandler = (event: any) => {
+	const [tempArr, setTempArr] = useState<string[]>([]);
+	const [date, setDate] = useState<string[]>([]);
+	const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setGetState({ q: event.target.value.trim() });
 		setChartParams({ ...chartParams, q: event.target.value.trim() });
 	};
 
-	const handleKeyDown = (event: any) => {
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter') {
 			// Get input value
 			setState(getState);
@@ -48,7 +48,7 @@ const WeatherInfo = () => {
 		}
 	};
 
-	const kelvinToFarenheit = (k: any) => {
+	const kelvinToFarenheit = (k: number) => {
 		return (k - 273.15).toFixed(2);
 	};
 
@@ -72,9 +72,9 @@ const WeatherInfo = () => {
 		setIsLoading(true);
 		const data = await getWeatherData('forecast', { ...chartParamsState })
 			.then((data) => {
-				const weeklyTemp: any = [];
-				const dateTemp: any = [];
-				data.list.map((items: any) => {
+				const weeklyTemp: string[] = [];
+				const dateTemp: string[] = [];
+				data.list.map((items: Record<string, any>) => {
 					weeklyTemp.push(kelvinToFarenheit(items.main.temp));
 					dateTemp.push(items.dt_txt.split(' '));
 					setDate(dateTemp);

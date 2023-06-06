@@ -10,7 +10,7 @@ export const API_CONFIG = {
 	}
 };
 
-export const getUrl = (url: string, params: any = {}): string => {
+export const getUrl = (url: string, params: Record<string, any> = {}): string => {
 	Object.keys(params).forEach((key) => (params[key] == null || params[key] === '') && delete params[key]);
 	let urlString = `${url}`;
 	if (params && !isEmpty(params)) {
@@ -19,7 +19,7 @@ export const getUrl = (url: string, params: any = {}): string => {
 	return urlString;
 };
 
-export const getWeatherData = (infoType: any, searchParams: any) => {
+export const getWeatherData = (infoType: string, searchParams: Record<string, any>) => {
 	const url = new URL(process.env.REACT_APP_URL + '/' + infoType);
 	url.search = new URLSearchParams({ ...searchParams, appid: process.env.REACT_APP_API_KEY }) as any;
 	return fetch(url).then((res) => res.json());
