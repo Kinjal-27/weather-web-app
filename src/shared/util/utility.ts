@@ -56,3 +56,7 @@ export const generateColor = () => {
 	const RGBColor = `${x} ,${y}, ${z}`;
 	return RGBColor;
 };
+
+export const kelvinToFarenheit = (k: number) => {
+	return (k - 273.15).toFixed(2);
+};

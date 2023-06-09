@@ -9,13 +9,31 @@ import {
 	Legend
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { kelvinToFarenheit } from 'shared/util/utility';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface IChartProps {
-	tempArr: string[];
+	weeklyArr: string[];
 	dateTemp: string[];
 }
-const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
+const LineChart = ({ weeklyArr, dateTemp }: IChartProps) => {
+	const temperature: any = [];
+	const handleTemperature = () => {
+		weeklyArr.map((items: any) => {
+			temperature.push(kelvinToFarenheit(items.main.temp));
+		});
+		return temperature;
+	};
+
+	const handleHumidity = () => {
+		const humidity: any = [];
+
+		weeklyArr.map((items: any) => {
+			humidity.push(items.main.humidity);
+		});
+		return humidity;
+	};
+
 	const data = {
 		labels: dateTemp,
 		backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -23,8 +41,15 @@ const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
 		datasets: [
 			{
 				label: 'Temperature (°C)',
-				data: tempArr,
+				data: handleTemperature(),
 				borderColor: 'rgba(75, 192, 192, 1)',
+				backgroundColor: 'white',
+				color: 'white'
+			},
+			{
+				label: 'Humidity',
+				data: handleHumidity(),
+				borderColor: 'rgba(255, 34, 100, 1)',
 				backgroundColor: 'white',
 				color: 'white'
 			}
@@ -65,14 +90,23 @@ const LineChart = ({ tempArr, dateTemp }: IChartProps) => {
 		},
 		plugins: {
 			legend: {
-				label: {
-					color: 'white'
+				labels: {
+					color: 'white',
+					size: 22,
+					font: {
+						weight: 'bold',
+						size: 18
+					}
 				}
 			}
 		}
 	};
 
-	return <Line data={data} options={config as Record<string, any>} />;
+	return (
+		<div className='line-chart-wrapper'>
+			<Line data={data} options={config as Record<string, any>} />
+		</div>
+	);
 };
 
 export default LineChart;
